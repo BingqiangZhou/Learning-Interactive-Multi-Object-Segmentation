@@ -1,0 +1,132 @@
+# NORM_TYPE: &norm_type 'IN'
+
+## basic config
+BASIC:
+  EXP_NAME: 'default_config'
+  EXP_RESULT_FOLDER: './exp_results'
+  
+  USE_GPU: True
+  GPU: 0
+  
+  TRAIN_OR_VAL: 'train'
+  MODEL_FILE_PATH: ''
+  EPOCHS: 100
+  SKIP_WHEN_INSTANCE_MORE_THAN: 10
+  USE_COURSE_LEARNING: False
+
+
+## dataset config
+DATASET:
+  DATASET_NAME: 'VOC'
+  DATASET_ROOT_FOLDER: '/raid/home/guiyan/datasets'
+  NUM_WORKERS: 4
+  PIN_MEMORY: True
+  BATCH_SIZE: 1 # only use 1, more than 1 will be out of memory, and the number of objects is not the same in same image.
+  TRAIN_TRANSFORM: 
+    - ['RandomHorizontalFlip', 0.5] 
+    - ['RandomVerticalFlip', 0.5]
+    - ['RandomResizedCrop', [256, 256], [0.75, 1.0], [0.75, 1.3333333333333333]]
+    - ['RandomRotation', [-15, 15]]
+    - ['ToTensor']
+  VAL_TRANSFORM: 
+    - ['ToTensor']
+
+RANDOM_SAMPLE:
+  NUMS_POINT: 10
+  # SAMPLE_PROB: 0.5 # prob of strategy 1, prob for strategy 2 equal `1-p`
+  # STRATEGY_1_MARGIN_INTERVAL: [0.05, 0.5]
+  # STRATEGY_2_MARGIN_INTERVAL: [0.5, 0.8]
+  D_STEP: 10
+  D_MARGIN: 5
+  SAMPLE_METHODS: ["random_sample", "adaptive_dstep", "adaptive_dmargin"]
+  DMARGIN_INTERVAL: [0.05, 0.5]
+  DSTEP_INTERVAL: [0.5, 0.8]
+
+## loss function config
+LOSS:
+  LAMBDA_EMBEDDING: 1
+  EMBEDDING_LOSS:
+    PACKAGE: 'loss'
+    LOSS:  'SISDLFEmbeddingLoss' # still need set EMBEDDING.WITH_MARGIN = False
+    PARAMETERS: [0.128, 0] # dd, dv
+    # LOSS: 'SISDMLEmbeddingLoss' # still need set EMBEDDING.WITH_MARGIN = False
+    # PARAMETERS: [5] # k 
+    # LOSS:  'ECOISEmbeddingLoss' # still need set EMBEDDING.WITH_MARGIN = True
+    # PARAMETERS: [1.0e-5] # lambda_smooth
+  
+  LAMBDA_CLASSIFIER: 1
+  CLASSIFIER_LOSS:
+    PACKAGE: 'torch.nn'
+    LOSS: 'CrossEntropyLoss'
+    PARAMETERS: [] # 
+
+## optimizer
+OPTIMIZER:
+  OPTIMIZER_NAME: 'Adam'
+  # params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False
+  OPTIMIZER_PARAMS: [['backbone', 1.0e-6], 1.0e-4, [0.9, 0.999], 1.0e-08, 1.0e-5]
+  USE_LR_SCHEDULER: True  
+  LR_SCHEDULER: 'StepLR'
+  # step_size, gamma=0.1, last_epoch=-1, verbose=False
+  LR_SCHEDULER_PARAMS: [30, 0.5]
+
+## network config
+NETWORK:
+  ## network.backbone
+  BACKBONE:
+    BACKBONE_NAME: 'deeplabv3_resnet101' # 'fcn_resnet101'
+    PRETRAINED: True
+    REPLACE_BN_LAYER_TO_GN: False
+    NUMS_CHANNEL_PER_GROUP_NORM: 32
+
+  ## network.embedding
+  EMBEDDING:
+    WITH_MARGIN: False
+    CONV_TYPE: 'DSConv'
+    NORM_TYPE: 'GN'
+    ACTIVATION_TYPE: 'ReLU'
+    IN_CHANNELS: [256, 128]
+    OUT_CHANNEL: 128
+    NUMS_CHANNEL_PER_GROUP_NORM: 32
+    EXTRA_1X1_CONV_FOR_LAST_LAYER: False
+
+  ## network.visual_attention
+  VISUAL_ATTENTION:
+    CHANNEL_OF_PER_INTERACTIVATE_MAP: 1
+
+    ## network.visual_attention.rnn_cells
+    RNN_CELLS:
+      IN_CHANNEL: 257  # 256+1
+      HIDDEN_CHANNEL: 64
+      NUMS_CONV_LSTM_LAYER: 1
+      USE_BIAS: True
+
+    ## network.visual_attention.foreground_convs
+    FOREGROUND_CONVS:
+      CONV_TYPE: 'DSConv'
+      NORM_TYPE: 'GN'
+      ACTIVATION_TYPE: 'ReLU'
+      IN_CHANNELS: [64, 128]
+      OUT_CHANNEL: 1
+      NUMS_CHANNEL_PER_GROUP_NORM: 32
+      EXTRA_1X1_CONV_FOR_LAST_LAYER: False
+
+    ## network.visual_attention.background_convs
+    BCAKGROUND_CONVS:
+      CONV_TYPE: 'DSConv'
+      NORM_TYPE: 'GN'
+      ACTIVATION_TYPE: 'ReLU'
+      IN_CHANNELS: [64, 64, 128]
+      OUT_CHANNEL: 1
+      NUMS_CHANNEL_PER_GROUP_NORM: 32
+      EXTRA_1X1_CONV_FOR_LAST_LAYER: False
+
+  ## network.dynamic_segmentation_head
+  DYNAMIC_SEGMENTATION_HEAD:
+    CONV_TYPE: 'DSConv'
+    NORM_TYPE: 'GN'
+    ACTIVATION_TYPE: 'ReLU'
+    IN_CHANNELS: [128, 128]
+    OUT_CHANNEL: 1
+    NUMS_CHANNEL_PER_GROUP_NORM: 32
+    EXTRA_1X1_CONV_FOR_LAST_LAYER: False
