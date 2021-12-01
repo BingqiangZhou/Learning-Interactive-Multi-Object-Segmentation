@@ -1,15 +1,18 @@
 # Learning Interactive Multi-Object Segmentation through Deep Recurrent Attention
 
-## 1. Paper (To Be Submitted)
+## 1. Paper
+
+**Yan Gui, Bingqiang Zhou, Jianming Zhang, Cheng Sun, Lingyun Xiang, Jin Zhang. Learning Interactive Multi-Object Segmentation through Appearance Embedding and Spatial Attention, Submitted to IEEE Transactions on Circuits and Systems for Video Technology.**
+
+experimental result data (.xlsx) in our paper：[experimental_results.zip](https://github.com/BingqiangZhou/Learning-Interactive-Multi-Object-Segmentation/releases/tag/experimental-results)
 
 ## 2. Run Demo App
 
-### 2.1 Download [model file](https://github.com/BingqiangZhou/Interactive-Multi-target-Segmentation/releases/download/model/best_mean_iou_epoch.pkl), and put it to `models` folder.
+### 2.1 Download [model file](https://github.com/BingqiangZhou/Learning-Interactive-Multi-Object-Segmentation/releases/download/model/best_mean_iou_epoch.pkl), and put it to `models` folder.
 
 ### 2.2 config python env，install dependent packages and run deom .
 
 ```bash
-
 ## 1. create conda virtual env.
 conda create -n mos python=3.6
 
