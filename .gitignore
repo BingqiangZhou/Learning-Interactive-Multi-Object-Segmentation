@@ -24,7 +24,7 @@ datasets/DAVIS.py
 datasets/ScriptDownloadDataset.ipynb
 datasets/utils.py
 
-loss/TotalLoss.py
+# loss/TotalLoss.py
 loss/SISDMLEmbeddingLoss.py
 loss/ECOISEmbeddingLoss.py
 loss/DiscriminativeLoss.py
