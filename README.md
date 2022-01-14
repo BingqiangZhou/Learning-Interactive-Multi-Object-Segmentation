@@ -1,4 +1,4 @@
-# Learning Interactive Multi-Object Segmentation through Deep Recurrent Attention
+# Learning Interactive Multi-Object Segmentation
 
 ## 1. Paper
 
