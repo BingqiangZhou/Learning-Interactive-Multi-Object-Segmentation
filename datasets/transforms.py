@@ -5,7 +5,7 @@ import torchvision
 import random
 import time
 
-class TransfromsCompose(torchvision.transforms.Compose):
+class Transfroms(torchvision.transforms.Compose):
     def __call__(self, *args):
         img_list = []
         img_list.extend(args)

@@ -24,18 +24,21 @@ conda create -n mos python=3.6
 conda activate mos
 
 ## 3. install pytorch, reference url: https://pytorch.org.
-conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
 
 ## 4. install other dependent packages.
-conda install numpy matplotlib pillow opencv-python
+conda install matplotlib=3.2 opencv-python scikit-learn yacs loguru tensorboard
 
-## 5. into the workspaces of demo.
+## 5. select GPU or CPU to inference.
+modify the value of "device_num" in file "./demo/args.py", for CPU，set "device_num" to number less than 0, for GPU, set "device_num" to the Number of GPU.
+
+## 6. into the workspaces of demo.
 cd ./demo
 
-## 6. run demo app by python file. (if you use ssh connect linux server to run deme app, you can skip this step, see 7-th step).
+## 7. run demo app by python file. (if you use ssh connect linux server to run deme app, you can skip this step, see 7-th step).
 python demo.py
 
-## 7. run demo app by jupyter notebook (you need run `conda install -c conda-forge notebook` to install jupyter notebook), and then run the last cell of `Demo.ipynb`.
+## 8. run demo app by jupyter notebook (you need run `conda install -c conda-forge notebook` to install jupyter notebook), and then run the last cell of `Demo.ipynb`.
 ```
 
 How to Segmentation, you can see **chapter 2.3**

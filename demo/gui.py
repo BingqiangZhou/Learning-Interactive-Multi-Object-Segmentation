@@ -63,8 +63,8 @@ def refresh():
     Args.cur_object_index = 1 if Args.points_list.number_of_array == 0 else Args.points_list.data[-1][-1]
     for k in range(Args.points_list.number_of_array):
         x, y, i = Args.points_list.data[k]
-        plt.scatter(x, y, c=[Args.color_map[i-1]/255])
-        plt.scatter(x, y, c='', marker='o', edgecolors='white')
+        # plt.scatter(x, y, c=[Args.color_map[i-1]/255])
+        plt.scatter(x, y, c=[Args.color_map[i-1]/255], marker='o', edgecolors='white')
     show_title()
     Args.cur_fig.canvas.draw()
 
@@ -98,8 +98,10 @@ def save(name, save_dir='./outputs'):
 def mouse_press(event):
     cur_points_num = Args.points_list.number_of_array
     if event.button == 1:  # 点击鼠标左键 进行交互
-        plt.scatter(event.xdata, event.ydata, c=[Args.color_map[Args.cur_object_index-1]/255])
-        plt.scatter(event.xdata, event.ydata, c='', marker='o', edgecolors='white')
+        if event.xdata is None or event.ydata is None:
+            return 
+        # plt.scatter(event.xdata, event.ydata, c=[Args.color_map[Args.cur_object_index-1]/255])
+        plt.scatter(event.xdata, event.ydata, c=[Args.color_map[Args.cur_object_index-1]/255], marker='o', edgecolors='white')
         Args.points_list.push((int(event.xdata), int(event.ydata), Args.cur_object_index))
 #         print("x,y=", event.xdata, event.ydata)
         Args.cur_fig.canvas.draw()
@@ -146,6 +148,7 @@ def key_press(event):
     elif event.key == 'c':
         Args.auto_predict = not Args.auto_predict
         show_title()
+        refresh()
     elif event.key == 'b':
         Args.cur_image_index = Args.max_image_index - 1 if Args.cur_image_index - 1 < 0 else Args.cur_image_index - 1
         init()

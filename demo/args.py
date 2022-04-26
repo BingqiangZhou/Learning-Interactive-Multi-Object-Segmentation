@@ -33,13 +33,8 @@ class Args():
     cur_object_index = 1
     points_list = ArrayStack(3)
 
-    device_num = 0
-    config_file_path = '../config/MOS.yaml'
-    # model_file_path='../model/best_mean_iou_epoch.pkl'
-    # 2021-07-05_16:07:04.951086
-    # 2021-07-07_10:46:08.035170
-#     2021-07-10_23:03:02.164128
-#     2021-06-15_21:21:31.709619
+    device_num = -1
+    config_file_path = '../config/MOS_For_Demo.yaml'
     model_file_path = '../models/best_mean_iou_epoch.pkl'
     net = MOSNet(device_num=device_num, 
                 config_file_path=config_file_path,

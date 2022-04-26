@@ -3,7 +3,7 @@ from .VOC import VOCSegmentation
 # from .COCO import COCOSegmeation
 # from .Cityscapes import CityscapesSegmenation
 # from .DAVIS import DAVISSegmenation
-# from .transforms import Transfroms
+from .transforms import Transfroms
 
 class Datasets():
     def __init__(self, name):
