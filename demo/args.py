@@ -34,7 +34,7 @@ class Args():
     points_list = ArrayStack(3)
 
     device_num = -1
-    config_file_path = '../config/MOS_For_Demo.yaml'
+    config_file_path = '../config/MOS.yaml'
     model_file_path = '../models/best_mean_iou_epoch.pkl'
     net = MOSNet(device_num=device_num, 
                 config_file_path=config_file_path,
