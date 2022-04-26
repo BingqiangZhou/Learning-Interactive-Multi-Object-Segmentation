@@ -29,3 +29,5 @@ loss/SISDMLEmbeddingLoss.py
 loss/ECOISEmbeddingLoss.py
 loss/DiscriminativeLoss.py
 
+demo/visualize_results.ipynb
+

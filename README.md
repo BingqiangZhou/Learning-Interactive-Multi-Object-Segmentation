@@ -4,6 +4,10 @@
 
 **"Yan Gui, Bingqing Zhou, Jianming Zhang, Cheng Sun, Lingyun Xiang, Jin Zhang. Learning Interactive Multi-Object Segmentation through Appearance Embedding and Spatial Attention, Submitted to IET Image Processing, 2021."**
 
+Overall architecture of Interactive Multi-Object Segmentation Network, as shown below.
+
+![example](fig1.png)
+
 experimental result data (.xlsx) in our paper：[experimental_results.zip](https://github.com/BingqiangZhou/Learning-Interactive-Multi-Object-Segmentation/releases/tag/experimental-results)
 
 ## 2. Run Demo App
@@ -50,6 +54,7 @@ How to Segmentation, you can see **chapter 2.3**
   - ['c' key]: change mode, 'auto predict' or 'press 'p' to predict'
   - ['b' key]: change to before image
   - ['a' key]: change to after image
+  - ['r' key]:  reset interaction
 
 ![example](SegDemo.gif)
 

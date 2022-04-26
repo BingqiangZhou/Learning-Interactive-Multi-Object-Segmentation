@@ -1,4 +1,5 @@
 from args import Args
+from codes.utils import random_project_to_n_channel
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -33,9 +34,10 @@ def color_map_bar():
 
 def show_title():
     mode_str = "auto predict" if Args.auto_predict else "press 'p' to predict"
-    plt.title(f"[{mode_str}] saved-current interactive {Args.cur_object_index}-th object")
-    Args.cur_fig.canvas.draw()
-
+    plt.title(f"[{mode_str}] current interactive {Args.cur_object_index}-th object")
+    # Args.cur_fig.canvas.draw()
+    # if Args.cur_fig.canvas is not None:
+    #     Args.cur_fig.canvas.refresh()
 def init():
     Args.points_list.clear()
     Args.result = None
@@ -62,6 +64,7 @@ def refresh():
     for k in range(Args.points_list.number_of_array):
         x, y, i = Args.points_list.data[k]
         plt.scatter(x, y, c=[Args.color_map[i-1]/255])
+        plt.scatter(x, y, c='', marker='o', edgecolors='white')
     show_title()
     Args.cur_fig.canvas.draw()
 
@@ -72,21 +75,31 @@ def save(name, save_dir='./outputs'):
     out_dir = os.path.join(save_dir, f'{name}_{now_str}')
     os.mkdir(out_dir)
     if Args.result is not None:
-        plt.imsave(os.path.join(out_dir, 'outputs.png'), Args.result/255)
+        plt.imsave(os.path.join(out_dir, 'outputs.png'), Args.result/255, cmap="gray")
 #         plt.imsave(os.path.join(save_dir, f'{name}_interactives_{now_str}.png'), show_image)
         plt.title("")
         plt.savefig(os.path.join(out_dir, f'outputs_with_interactives.png'))
+    if Args.embedding is not None:
+        for i in range(3):
+            embedding_np = random_project_to_n_channel(Args.embedding)
+            plt.imsave(os.path.join(out_dir, f'embedding_{i+1}.png'), embedding_np)
+    if Args.visual_attention_maps is not None:
+        for i in range(Args.visual_attention_maps.shape[0]):
+            plt.imsave(os.path.join(out_dir, f'visual_attention_{i+1}.png'), Args.visual_attention_maps[i], cmap="gray")
     if Args.points_list.number_of_array > 0:
         interactive_image = Args.source_image.copy()
+        np.save(os.path.join(out_dir, f'interactives.npy'), Args.points_list.data)
         for k in range(Args.points_list.number_of_array):
             x, y, i = Args.points_list.data[k]
-            cv.circle(interactive_image, (x, y), 5, Args.color_map[i-1].tolist(), -1)
+            cv.circle(interactive_image, (x, y), 10, Args.color_map[i-1].tolist(), -1)
+            cv.circle(interactive_image, (x, y), 10, (255, 255, 255), 2)
         cv.imwrite(os.path.join(out_dir, f'interactives.png'), interactive_image[:,:,::-1])
 
 def mouse_press(event):
     cur_points_num = Args.points_list.number_of_array
     if event.button == 1:  # 点击鼠标左键 进行交互
         plt.scatter(event.xdata, event.ydata, c=[Args.color_map[Args.cur_object_index-1]/255])
+        plt.scatter(event.xdata, event.ydata, c='', marker='o', edgecolors='white')
         Args.points_list.push((int(event.xdata), int(event.ydata), Args.cur_object_index))
 #         print("x,y=", event.xdata, event.ydata)
         Args.cur_fig.canvas.draw()
@@ -104,7 +117,7 @@ def mouse_press(event):
     if Args.auto_predict and cur_points_num != Args.points_list.number_of_array:
         if Args.points_list.number_of_array > 0:
             plt.title(f"predicting...")
-            Args.result, _, _ = Args.net.predict(Args.source_image, Args.points_list.data)
+            Args.result, Args.embedding, Args.visual_attention_maps = Args.net.predict(Args.source_image, Args.points_list.data)
             refresh()
         else:
             Args.result = None
@@ -129,6 +142,7 @@ def key_press(event):
         plt.title(f"saving...")
         save(Args.cur_image_name, save_dir='./outputs')
         show_title()
+        refresh()
     elif event.key == 'c':
         Args.auto_predict = not Args.auto_predict
         show_title()
@@ -140,3 +154,22 @@ def key_press(event):
         Args.cur_image_index = Args.cur_image_index + 1 if Args.cur_image_index + 1 < Args.max_image_index else 0
         init()
         refresh()
+    elif event.key == 'r':
+        init()
+        refresh()
+
+
+readme_string = """
+    operation: 
+        mouse: 
+            [left button]：interacte
+            [right button]：cancel last interactation
+        keyboard:
+            [number key, include 1-9]: n-th object mark
+            ['p' key]: predict result when not in "auto predict" mode
+            ['k' key]：save result inlcude predict label, embedding map(random projection), visual attention map
+            ['c' key]: change mode, 'auto predict' or 'press 'p' to predict'
+            ['b' key]: change to before image
+            ['a' key]: change to after image
+            ['r' key]: reset current state
+"""
