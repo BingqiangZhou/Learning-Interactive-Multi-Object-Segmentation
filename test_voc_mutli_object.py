@@ -30,7 +30,7 @@ def f1_score(binary_predict, binary_target,  epsilon=1e-6):
 
     return 2 * (precision * recall) / (precision + recall + epsilon)
 
-config_file_path = './config/t.yaml'
+config_file_path = './config/MOS.yaml'
 config = Config(config_file_path).get_configs()
 model_file_path = './models/best_mean_iou_epoch.pkl'
 

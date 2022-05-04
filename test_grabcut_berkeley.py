@@ -36,7 +36,7 @@ def mkdir(dir):
         return 1
     return 0
 
-config_file_path = './config/t.yaml'
+config_file_path = './config/MOS.yaml'
 config = Config(config_file_path).get_configs()
 model_file_path = './models/best_mean_iou_epoch.pkl'
 

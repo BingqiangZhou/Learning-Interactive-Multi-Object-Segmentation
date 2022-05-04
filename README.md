@@ -1,3 +1,10 @@
+<!--
+ * @Author       : Bingqiang Zhou
+ * @Date         : 2022-01-14 12:42:13
+ * @LastEditors  : Bingqiang Zhou
+ * @LastEditTime : 2022-05-05 04:08:51
+ * @Description  : 
+-->
 # Learning Interactive Multi-Object Segmentation
 
 ## 1. Paper
@@ -60,6 +67,64 @@ How to Segmentation, you can see **chapter 2.3**
   - ['r' key]:  reset interaction
 
 ![example](SegDemo.gif)
+
+## 3. Train
+
+### 3.1 Download [VOC2012](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/) dataset and extract files
+
+```bash
+wget -c http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
+
+tar -xvf VOCtrainval_11-May-2012.tar
+```
+
+### 3.2 modify config file
+
+setting the path of voc2012 and whether use GPU in `./config/MOS.yaml`.
+
+```bash
+# line 8-9
+BASIC:
+  USE_GPU: True
+  GPU: 0
+
+# line 21
+DATASET:
+  DATASET_ROOT_FOLDER:
+```
+
+### 3.3 run main.py
+
+```bash
+python main.py -c ./config/MOS.yaml 
+```
+
+## 4. Test
+
+### 4.1 generate interactive pairs
+
+```bash
+# 1. install refernece package
+pip install tqdm pandas
+
+# 2. run generate_interactive_pairs.py
+python generate_interactive_pairs.py
+```
+
+### 4.2 test Our-S and Our-M
+
+```bash
+# 1. setting the path of voc2012 to 'voc_root_dir' 
+
+# 2. setting the path of interaction generated to 'interactives_dir'
+
+# 3. test Our-S
+python test_voc_singal_object.py
+
+# 4. test Our-M
+python test_voc_mutli_object.py
+```
+
 
 ====================================================
 
