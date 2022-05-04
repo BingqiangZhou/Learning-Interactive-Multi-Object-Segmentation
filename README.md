@@ -13,9 +13,9 @@ experimental result data (.xlsx) in our paper：[experimental_results.zip](https
 
 ## 2. Run Demo App
 
-### 2.1 Download [model file](https://github.com/BingqiangZhou/Learning-Interactive-Multi-Object-Segmentation/releases/download/model/best_mean_iou_epoch.pkl), and put it to `models` folder.
+### 2.1 Download [model file](https://github.com/BingqiangZhou/Learning-Interactive-Multi-Object-Segmentation/releases/download/model/best_mean_iou_epoch.pkl), and put it to `models` folder
 
-### 2.2 config python env，install dependent packages and run deom .
+### 2.2 config python env，install dependent packages and run demo
 
 ```bash
 ## 1. create conda virtual env.
@@ -121,7 +121,7 @@ python test_voc_singal_object.py
 python test_voc_mutli_object.py
 ```
 
-### 4.3 test Our-S and Our-M on GrabCut dataset
+### 4.3 test Our-S on GrabCut dataset
 
 ```bash
 # 1. download GrabCut dataset and extract files
@@ -150,7 +150,7 @@ python generate_interactive_pairs_grabcut_berkeley.py
 python test_grabcut_berkeley.py
 ```
 
-### 4.4 test Our-S and Our-M on Berkeley dataset
+### 4.4 test Our-S on Berkeley dataset
 
 ```bash
 # download GrabCut dataset and extract files
@@ -174,6 +174,36 @@ python generate_interactive_pairs_grabcut_berkeley.py
 # 8. run 'test_grabcut_berkeley.py' to test
 python test_grabcut_berkeley.py
 ```
+
+## 5. Other Datasets for Interactive Segmentation
+
+The following table contains some datasets for interactive image segmentation，and the table is derived from [saic-vul/ritm_interactive_segmentation](https://github.com/saic-vul/ritm_interactive_segmentation).
+
+| Dataset   |                      Description             |           Download Link              |
+|-----------|----------------------------------------------|:------------------------------------:|
+|ADE20k     |  22k images with 434k instances (total)      |  [official site][ADE20k]             |
+|OpenImages |  944k images with 2.6M instances (total)     |  [official site][OpenImages]         |
+|MS COCO    |  118k images with 1.2M instances (train)     |  [official site][MSCOCO]             |
+|LVIS v1.0  |  100k images with 1.2M instances (total)     |  [official site][LVIS]               |
+|COCO+LVIS* |  99k images with 1.5M instances (train)      |  [original LVIS images][LVIS] + [our combined annotations][COCOLVIS_annotation] |
+|SBD        |  8498 images with 20172 instances for (train) 2857 images with 6671 instances for (test) |[official site][SBD]|
+|Grab Cut   |  50 images with one object each (test)       |  [GrabCut.zip (11 MB)][GrabCut]      |
+|Berkeley   |  96 images with 100 instances (test)         |  [Berkeley.zip (7 MB)][Berkeley]     |
+|DAVIS      |  345 images with one object each (test)      |  [DAVIS.zip (43 MB)][DAVIS]          |
+|Pascal VOC |  1449 images with 3417 instances (validation)|  [official site][PascalVOC]          |
+|COCO_MVal  |  800 images with 800 instances (test)        |  [COCO_MVal.zip (127 MB)][COCO_MVal] |
+
+[ADE20k]: http://sceneparsing.csail.mit.edu/
+[OpenImages]: https://storage.googleapis.com/openimages/web/download.html
+[MSCOCO]: https://cocodataset.org/#download
+[LVIS]: https://www.lvisdataset.org/dataset
+[SBD]: http://home.bharathh.info/pubs/codes/SBD/download.html
+[GrabCut]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/GrabCut.zip
+[Berkeley]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/Berkeley.zip
+[DAVIS]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/DAVIS.zip
+[PascalVOC]: http://host.robots.ox.ac.uk/pascal/VOC/
+[COCOLVIS_annotation]: https://github.com/saic-vul/ritm_interactive_segmentation/releases/download/v1.0/cocolvis_annotation.tar.gz
+[COCO_MVal]: https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/COCO_MVal.zip
 
 ====================================================
 
