@@ -1,10 +1,4 @@
-<!--
- * @Author       : Bingqiang Zhou
- * @Date         : 2022-01-14 12:42:13
- * @LastEditors  : Bingqiang Zhou
- * @LastEditTime : 2022-05-05 04:08:51
- * @Description  : 
--->
+
 # Learning Interactive Multi-Object Segmentation
 
 ## 1. Paper
@@ -80,7 +74,7 @@ tar -xvf VOCtrainval_11-May-2012.tar
 
 ### 3.2 modify config file
 
-setting the path of voc2012 and whether use GPU in `./config/MOS.yaml`.
+setting the path of voc2012 and whether use GPU in `./config/MOS.yaml`. (Tips: On this file, you can change the configuration of dataset, loss, network and so on.)
 
 ```bash
 # line 8-9
@@ -105,18 +99,20 @@ python main.py -c ./config/MOS.yaml
 
 ```bash
 # 1. install refernece package
-pip install tqdm pandas
+pip install tqdm pandas openpyxl
 
-# 2. run generate_interactive_pairs.py
-python generate_interactive_pairs.py
+# 2. setting the path of VOC2012 to 'voc_root_dir' on 'generate_interactive_pairs_voc.py'
+
+# 3. run generate_interactive_pairs_voc.py
+python generate_interactive_pairs_voc.py
 ```
 
-### 4.2 test Our-S and Our-M
+### 4.2 test Our-S and Our-M on VOC2012 dataset
 
 ```bash
-# 1. setting the path of voc2012 to 'voc_root_dir' 
+# 1. setting the path of VOC2012 to 'voc_root_dir' on 'test_voc_singal_object.py'(Our-S) or 'test_voc_mutli_object.py'(Our-M)
 
-# 2. setting the path of interaction generated to 'interactives_dir'
+# 2. setting the path of interaction generated to 'interactives_dir' on 'test_voc_singal_object.py'(Our-S) or 'test_voc_mutli_object.py'(Our-M)
 
 # 3. test Our-S
 python test_voc_singal_object.py
@@ -125,6 +121,59 @@ python test_voc_singal_object.py
 python test_voc_mutli_object.py
 ```
 
+### 4.3 test Our-S and Our-M on GrabCut dataset
+
+```bash
+# 1. download GrabCut dataset and extract files
+wget -c https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/GrabCut.zip
+
+unzip GrabCut.zip
+
+# 2. modify folder name of image and gt
+mv data_GT images
+mv boundary_GT masks
+
+# 3. setting the path of GrabCut to 'datasets_root_dir' on 'generate_interactive_pairs_grabcut_berkeley.py'
+
+# 4. setting the dataset name to 'datasets' list on 'generate_interactive_pairs_grabcut_berkeley.py'.
+
+# 5. run 'generate_interactive_pairs_grabcut_berkeley.py' to genrate interaction.
+python generate_interactive_pairs_grabcut_berkeley.py
+
+# 6. setting the path of interaction generated to 'interactives_dir' on 'test_grabcut_berkeley.py'
+
+# 7. setting the path of GrabCut to 'dataset_root_dir' on 'test_grabcut_berkeley.py'
+
+# 8. setting the path of result to 'out_dir' on 'test_grabcut_berkeley.py'
+
+# 9. run 'test_grabcut_berkeley.py' to test
+python test_grabcut_berkeley.py
+```
+
+### 4.4 test Our-S and Our-M on Berkeley dataset
+
+```bash
+# download GrabCut dataset and extract files
+wget -c https://github.com/saic-vul/fbrs_interactive_segmentation/releases/download/v1.0/Berkeley.zip
+
+unzip Berkeley.zip
+
+# 2. setting the path of Berkeley to 'datasets_root_dir' on 'generate_interactive_pairs_grabcut_berkeley.py'
+
+# 3. setting the dataset name to 'datasets' list on 'generate_interactive_pairs_grabcut_berkeley.py'.
+
+# 4. run 'generate_interactive_pairs_grabcut_berkeley.py' to genrate interaction.
+python generate_interactive_pairs_grabcut_berkeley.py
+
+# 5. setting the path of interaction generated to 'interactives_dir' on 'test_grabcut_berkeley.py'
+
+# 6. setting the path of Berkeley to 'dataset_root_dir' on 'test_grabcut_berkeley.py'
+
+# 7. setting the path of result to 'out_dir' on 'test_grabcut_berkeley.py'
+
+# 8. run 'test_grabcut_berkeley.py' to test
+python test_grabcut_berkeley.py
+```
 
 ====================================================
 
